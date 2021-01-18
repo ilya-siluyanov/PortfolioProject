@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wait please</title>
+</head>
+<body>
+<form action="/home" method="post" th:object="${account}">
+    <input type="hidden" th:field="*{id}" th:value="${account.getId()}">
+    <input type="hidden" th:field="*{login}" th:value="${account.getLogin()}">
+    <input type="hidden" th:field="*{password}" th:value="${account.getPassword()}">
+    <input type="hidden" th:field="*{name}" th:value="${account.getName()}">
+    <input type="hidden" th:field="*{surname}" th:value="${account.getSurname()}">
+    <input type="hidden" th:field="*{balance}" th:value="${account.getBalance()}">
+
+    <button type="submit" id="redirectButton"></button>
+</form>
+
+    <script>
+        let button = document.getElementById("redirectButton")
+        button.click()
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+<p th:text="${myAccount.getName()}"></p>
+<p th:text="${myAccount.getSurname()}"></p>
+
+<div id="BTC_USD_layout">
+    <p>How much Bitcoin costs right now(USD)?</p>
+    <p class="currentValue"></p>
+    <p class="difference"></p>
+</div>
+
+<script>
+    const socket = new WebSocket('wss://ws.finnhub.io?token=c02p00v48v6srfkamvp0');
+    const BtcUsdLayout = document.getElementById("BTC_USD_layout")
+    const currValueLayout = document.getElementsByClassName("currentValue")[0]
+    const differenceLayout = document.getElementsByClassName("difference")[0]
+    let prevBtcUsdValue = -1
+    // Connection opened -> Subscribe
+    socket.addEventListener('open', function (event) {
+        socket.send(JSON.stringify({'type': 'subscribe', 'symbol': 'BINANCE:BTCUSDT'}))
+    });
+
+    // Listen for messages
+    socket.addEventListener('message', function (event) {
+        let result = JSON.parse(event.data)
+        result = result["data"]
+        result = parseFloat(result[result.length-1]["p"]) //value
+        if(prevBtcUsdValue!==-1) {
+            differenceLayout.innerText = (result - prevBtcUsdValue).toString().substr(0,4)
+        }
+        currValueLayout.innerText = result.toString()
+        prevBtcUsdValue = result
+    });
+
+    // Unsubscribe
+    var unsubscribe = function (symbol) {
+        socket.send(JSON.stringify({'type': 'unsubscribe', 'symbol': symbol}))
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+</head>
+<body>
+<p th:if="${isLoginUnsuccessful==true}" style="color:red">
+    Account was not found. Try again.
+</p>
+<form method="post" action="/login" th:object="${rawAccount}">
+    <input name="rawLogin" th:field="*{rawLogin}" placeholder="login"/>
+    <input name="rawPassword" type="password" th:field="*{rawPassword}" placeholder="password"/>
+    <button type="submit">Sign in</button>
+</form>
+<a href="/registerPage">
+    <button>Sign up</button>
+</a>
+
+</body>
+</html>
